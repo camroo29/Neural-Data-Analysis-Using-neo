@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import neo
 import numpy as np
 
@@ -11,9 +12,17 @@ class WaveAnalysis:
         self.event_times = segment.events[0].times
 
     def signal_spikes(self, signal_index):
-        self._spike_at(signal_index, 0)
+        x = []
+        y = []
+        for i in range(len(self.event_times)):
+            tup = self._spike_at(signal_index, i)
+            x.append(tup[0])
+            y.append(tup[1])
+        plt.plot(x, y)
+        plt.grid(True)
+        plt.show()
 
-    def _spike_at(self, signal_index, event_idx, delta=2e-04):
+    def _spike_at(self, signal_index, event_idx, delta=2e-04) -> tuple:
         """
         :param signal_index: What signal?
         :param event_idx: Index into the event time
@@ -31,8 +40,16 @@ class WaveAnalysis:
         print(time)
         arr = [(float(x[idx].magnitude), float(y[idx].magnitude)) for idx in
                np.where(np.logical_and(x >= left, x <= right))[0]]
-        print(arr)
-        print([abs(time - x) for x, y in arr])
+        # print(arr)
+        # print([abs(time - x) for x, y in arr])
+
+        coordinate = None
+        diff = float("inf")
+        for x, y in arr:
+            if abs(time - x) < diff:
+                diff = abs(time - x)
+                coordinate = (x, y)
+        return coordinate
 
 
 if __name__ == '__main__':
