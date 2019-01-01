@@ -11,25 +11,39 @@ class WaveAnalysis:
         self.signals = segment.analogsignals
         self.event_times = segment.events[0].times
 
+    # def signal_spikes_all(self):
+    #     colors = ['r', 'g', 'b', 'r']
+    #     for i in range(1, len(self.signals)):
+    #         x, y = self.signal_spikes(i)
+    #         plt.plot(x, y, colors[i])
+    #     plt.show()
+
     def signal_spikes(self, signal_index):
         x = []
         y = []
+        print(f"{self.signals[signal_index].name}")
         for i in range(len(self.event_times)):
             tup = self._spike_at(signal_index, i)
             x.append(tup[0])
             y.append(tup[1])
+
+        #return x, y
         plt.plot(x, y)
+        plt.xlabel('Trigger Times', fontsize=14)
+        plt.ylabel('Response', fontsize=14)
+        plt.title(self.signals[signal_index].name, fontsize=18)
         plt.grid(True)
         plt.show()
+        return x, y
 
-    def _spike_at(self, signal_index, event_idx, delta=2e-04) -> tuple:
+    def _spike_at(self, signal_index, event_idx, delta=5e-04) -> tuple:
         """
         :param signal_index: What signal?
         :param event_idx: Index into the event time
         :param delta:
         :return:
         """
-        x = self.signals[signal_index].times
+        x = self.signals[signal_index].times    # same value for all the channels
         y = self.signals[signal_index]
 
         time = self.event_times[event_idx].magnitude
@@ -37,11 +51,11 @@ class WaveAnalysis:
         left = time - delta  # lower bound from event.times
         right = time + delta  # upper bound from event.times
 
-        print(time)
+        #print(time)
         arr = [(float(x[idx].magnitude), float(y[idx].magnitude)) for idx in
                np.where(np.logical_and(x >= left, x <= right))[0]]
-        # print(arr)
-        # print([abs(time - x) for x, y in arr])
+        print(arr)
+        #print([abs(time - x) for x, y in arr])
 
         coordinate = None
         diff = float("inf")
@@ -49,9 +63,14 @@ class WaveAnalysis:
             if abs(time - x) < diff:
                 diff = abs(time - x)
                 coordinate = (x, y)
+                #print(coordinate)
         return coordinate
 
 
 if __name__ == '__main__':
     analysis = WaveAnalysis("A:\Campus Work\Wave_analysis\EEP data\J5-527.smr")
+    #for i in range(1, 5):
     analysis.signal_spikes(1)
+    # analysis.signal_spikes(2)
+    # analysis.signal_spikes(3)
+    # analysis.signal_spikes(4)
