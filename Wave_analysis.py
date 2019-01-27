@@ -11,12 +11,12 @@ class WaveAnalysis:
         self.signals = segment.analogsignals
         self.event_times = segment.events[0].times
 
-    # def signal_spikes_all(self):
-    #     colors = ['r', 'g', 'b', 'r']
-    #     for i in range(1, len(self.signals)):
-    #         x, y = self.signal_spikes(i)
-    #         plt.plot(x, y, colors[i])
-    #     plt.show()
+    """def signal_spikes_all(self):
+        colors = ['r', 'g', 'b', 'r']
+        for i in range(1, len(self.signals)):
+            x, y = self.signal_spikes(i)
+            plt.plot(x, y, colors[i])
+        plt.show()"""
 
     def signal_spikes(self, signal_index):
         x = []
@@ -27,16 +27,17 @@ class WaveAnalysis:
             x.append(tup[0])
             y.append(tup[1])
 
-        #return x, y
         plt.plot(x, y)
         plt.xlabel('Trigger Times', fontsize=14)
         plt.ylabel('Response', fontsize=14)
         plt.title(self.signals[signal_index].name, fontsize=18)
         plt.grid(True)
         plt.show()
+        #plt.hold(True)
         return x, y
 
-    def _spike_at(self, signal_index, event_idx, delta=5e-04) -> tuple:
+
+    def _spike_at(self, signal_index, event_idx, delta=2e-03) -> tuple:
         """
         :param signal_index: What signal?
         :param event_idx: Index into the event time
@@ -48,7 +49,7 @@ class WaveAnalysis:
 
         time = self.event_times[event_idx].magnitude
 
-        left = time - delta  # lower bound from event.times
+        left = time  # lower bound from event.times
         right = time + delta  # upper bound from event.times
 
         #print(time)
@@ -69,8 +70,9 @@ class WaveAnalysis:
 
 if __name__ == '__main__':
     analysis = WaveAnalysis("A:\Campus Work\Wave_analysis\EEP data\J5-527.smr")
-    #for i in range(1, 5):
-    analysis.signal_spikes(1)
-    # analysis.signal_spikes(2)
-    # analysis.signal_spikes(3)
-    # analysis.signal_spikes(4)
+    for i in range(1, 5):
+        analysis.signal_spikes(i)
+
+
+
+
