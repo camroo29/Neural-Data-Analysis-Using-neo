@@ -11,13 +11,6 @@ class WaveAnalysis:
         self.signals = segment.analogsignals
         self.event_times = segment.events[0].times
 
-    """def signal_spikes_all(self):
-        colors = ['r', 'g', 'b', 'r']
-        for i in range(1, len(self.signals)):
-            x, y = self.signal_spikes(i)
-            plt.plot(x, y, colors[i])
-        plt.show()"""
-
     def signal_spikes(self, signal_index):
         x = []
         y = []
@@ -33,7 +26,7 @@ class WaveAnalysis:
         plt.title(self.signals[signal_index].name, fontsize=18)
         plt.grid(True)
         plt.show()
-        #plt.hold(True)
+        # plt.hold(True)
         return x, y
 
 
@@ -52,11 +45,11 @@ class WaveAnalysis:
         left = time  # lower bound from event.times
         right = time + delta  # upper bound from event.times
 
-        #print(time)
+        # print(time)
         arr = [(float(x[idx].magnitude), float(y[idx].magnitude)) for idx in
                np.where(np.logical_and(x >= left, x <= right))[0]]
         print(arr)
-        #print([abs(time - x) for x, y in arr])
+        # print([abs(time - x) for x, y in arr])
 
         coordinate = None
         diff = float("inf")
@@ -64,13 +57,12 @@ class WaveAnalysis:
             if abs(time - x) < diff:
                 diff = abs(time - x)
                 coordinate = (x, y)
-                #print(coordinate)
         return coordinate
 
 
 if __name__ == '__main__':
     analysis = WaveAnalysis("A:\Campus Work\Wave_analysis\EEP data\J5-527.smr")
-    for i in range(1, 5):
+    for i in range(1, 5):       # 4-channels
         analysis.signal_spikes(i)
 
 
