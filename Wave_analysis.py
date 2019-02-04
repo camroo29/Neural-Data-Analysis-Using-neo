@@ -61,7 +61,7 @@ class WaveAnalysis:
 
 
 if __name__ == '__main__':
-    analysis = WaveAnalysis("A:\Campus Work\Wave_analysis\EEP data\J5-527.smr")
+    analysis = WaveAnalysis("File location")
     for i in range(1, 5):       # 4-channels
         analysis.signal_spikes(i)
 
